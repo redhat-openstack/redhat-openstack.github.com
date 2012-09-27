@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Initial setup of repository by fedora-openstack</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Initial setup of repository</h1>
+        <p></p>
+
+
+        <p class="view"><a href="https://github.com/fedora-openstack">View My GitHub Profile</a></p>
+
+      </header>
+      <section>
+        <h2>New fedora-openstack project setup on github</h2>
+
+<ol>
+<li>Fork $project to fedora-openstack org</li>
+<li>fedpkg clone $project &amp;&amp; cd $project</li>
+<li>git remote add -f fedora-openstack <a href="mailto:git@github.com">git@github.com</a>:fedora-openstack/$project.git</li>
+<li>git checkout fedora-openstack/master</li>
+<li>git checkout -b master-patches # New local branch</li>
+<li>git push --set-upstream fedora-openstack master-patches # New upstream branch</li>
+<li>On github set master-patches branch to default
+8  git push fedora-openstack :master # Delete upstream master branch</li>
+</ol><h2>setup local repo (if you someone else set it up on github)</h2>
+
+<ol>
+<li>fedpkg clone $project &amp;&amp; cd $project</li>
+<li>git remote add -f fedora-openstack <a href="mailto:git@github.com">git@github.com</a>:fedora-openstack/$project.git</li>
+<li>git branch master-patches fedora-openstack/master-patches</li>
+</ol><h2>finish setup of local repo</h2>
+
+<ol>
+<li>git remote add -f openstack git://github.com/openstack/$project.git</li>
+<li>git remote add -f fedora-smokestack <a href="mailto:git@github.com">git@github.com</a>:fedora-openstack/openstack-$project.git</li>
+</ol>
+      </section>
+      <footer>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
