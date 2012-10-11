@@ -31,7 +31,7 @@
 
 <ul>
 <li>Fork $project to fedora-openstack org</li>
-<li><code>fedpkg clone $project &amp;&amp; cd $project</code></li>
+<li><code>fedpkg clone openstack-$project &amp;&amp; cd openstack-$project</code></li>
 <li><code>git remote add -f fedora-openstack git@github.com:fedora-openstack/$project.git</code></li>
 <li><code>git checkout fedora-openstack/master</code></li>
 <li>
@@ -44,7 +44,7 @@
 </ul><h2>setup local repo for a $project (if someone else set it up on github)</h2>
 
 <ul>
-<li><code>fedpkg clone $project &amp;&amp; cd $project</code></li>
+<li><code>fedpkg clone openstack-$project &amp;&amp; cd openstack-$project</code></li>
 <li><code>git remote add -f fedora-openstack git@github.com:fedora-openstack/$project.git</code></li>
 <li><code>git branch master-patches fedora-openstack/master-patches</code></li>
 </ul><h2>finish setup of local repo</h2>
