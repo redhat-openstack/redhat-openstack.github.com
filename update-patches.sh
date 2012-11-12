@@ -34,7 +34,7 @@ spec=$(fedpkg gimmespec)
 branch=$(git branch | awk '/^\* / {print $2}')
 patches_branch="${branch}-patches"
 patches_base=$(awk -F '=' '/# patches_base/ { print $2 }' "${spec}")
-orig_patches=$(awk '/^Patch[0-9][0-9]*:/ { print $2 }' "${spec}")
+orig_patches=$(awk '/^#?Patch[0-9][0-9]*:/ { print $2 }' "${spec}")
 
 #
 # Create a commit which removes all the patches
@@ -68,7 +68,7 @@ git add ${new_patches}
 #
 # Remove the Patch/%patch lines from the spec file
 #
-sed -i '/^\(Patch\|%patch\)[0-9][0-9]*/d' "${spec}"
+sed -i '/^#\?\(Patch\|%patch\)[0-9][0-9]*/d' "${spec}"
 
 #
 # Add a new set of Patch/%patch lines
