@@ -30,7 +30,16 @@ filterdiff /dev/null || {
     exit 1
 }
 
-spec=$(fedpkg gimmespec)
+if fedpkg --help >/dev/null 2>&1; then
+  fedpkg=fedpkg
+elif rhpkg --help >/dev/null 2>&1; then
+  fedpkg=rhpkg
+else
+  echo "Neither fedpkg or rhpkg found" >&2
+  exit 1
+fi
+
+spec=$($fedpkg gimmespec)
 branch=$(git branch | awk '/^\* / {print $2}')
 patches_branch="${branch}-patches"
 patches_base=$(awk -F '=' '/# patches_base/ { print $2 }' "${spec}")
@@ -48,7 +57,11 @@ git commit --allow-empty -m "Updated patches from ${patches_branch}" ${orig_patc
 # Check out the ${branch}-patches branch and format the patches
 #
 git checkout "${patches_branch}"
-new_patches=$(git format-patch --no-renames --no-signature -N "${patches_base}")
+
+# avoid putting changeable git version in patches if possible
+git format-patch --no-signature 2>/dev/null && nosig='--no-signature'
+
+new_patches=$(git format-patch --no-renames $nosig -N "${patches_base}")
 
 #
 # Filter non dist files from the patches as otherwise
