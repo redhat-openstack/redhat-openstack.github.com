@@ -43,6 +43,10 @@ spec=$($fedpkg gimmespec)
 branch=$(git branch | awk '/^\* / {print $2}')
 patches_branch="${branch}-patches"
 patches_base=$(awk -F '=' '/# patches_base/ { print $2 }' "${spec}")
+patches_skip=${patches_base##*+} # extract skip count
+[ "$patches_skip" = "$patches_base" ] && patches_skip=0
+patches_base=${patches_base%+*} # strip skip count
+
 orig_patches=$(awk '/^#?Patch[0-9][0-9]*:/ { print $2 }' "${spec}")
 
 #
@@ -61,7 +65,9 @@ git checkout "${patches_branch}"
 # avoid putting changeable git version in patches if possible
 git format-patch --no-signature 2>/dev/null && nosig='--no-signature'
 
-new_patches=$(git format-patch --no-renames $nosig -N "${patches_base}")
+start_commit=$(git log --oneline ${patches_base}.. |
+               head -n-${patches_skip} | tail -n1 | cut -d ' ' -f1)
+new_patches=$(git format-patch --no-renames $nosig -N "${start_commit}~")
 
 #
 # Filter non dist files from the patches as otherwise
