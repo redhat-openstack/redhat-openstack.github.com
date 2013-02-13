@@ -105,7 +105,7 @@ for p in ${new_patches}; do
 done
 
 sed -i -e "/# patches_base/ { N; r ${patches_list}" -e "}" "${spec}"
-sed -i -e "/%setup -q / { N; r ${patches_apply}" -e "}" "${spec}"
+sed -i -e "/^%setup -q/ { N; r ${patches_apply}" -e "}" "${spec}"
 
 #
 # Update the original commit to include the new set of patches
