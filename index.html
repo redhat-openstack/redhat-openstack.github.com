@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>fedora-openstack by fedora-openstack</title>
+    <title>fedora-openstack by redhat-openstack</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -19,44 +19,47 @@
         <p></p>
 
 
-        <p class="view"><a href="https://github.com/fedora-openstack">View My GitHub Profile</a></p>
+        <p class="view"><a href="https://github.com/redhat-openstack">View My GitHub Profile</a></p>
 
       </header>
       <section>
-        <p><a href="https://github.com/fedora-openstack/fedora-openstack.github.com/generated_pages/new">edit</a> (theme=minimal)</p>
+        <p><a href="https://github.com/redhat-openstack/redhat-openstack.github.com/generated_pages/new">edit</a> (theme=minimal)</p>
 
-<p>This organisation is used to group repositories related to the management of the OpenStack packages in Fedora. The repositories named openstack-* contain the packaging files related to the trunk tracking <a href="http://smokestack.openstack.org/about">smokestack</a> project. The rest are forks of the OpenStack projects themselves, allow us to use git to manipulate the changes, with the patches within the packages being automatically generated from the git repositories.</p>
+<p>This organisation is used to group repositories related to the management of <strong>RDO</strong> packages.
+The <strong>R</strong>ed Hat <strong>D</strong>istribution of <strong>O</strong>penStack packages are community maintained OpenStack packages for Fedora, Red Hat Enterprise Linux and derivatives.</p>
+
+<p>The repositories named openstack-* contain the packaging files related to the trunk tracking <a href="http://smokestack.openstack.org/about">smokestack</a> project. The rest are forks of the OpenStack projects themselves, allowing us to use git to manipulate the changes, with the patches within the packages being automatically generated from the git repositories.</p>
 
 <p>Following are the steps to use this workflow:</p>
 
-<h2>New fedora-openstack project setup</h2>
+<h2>New redhat-openstack project setup</h2>
 
 <ul>
-<li>Fork $project to fedora-openstack org</li>
+<li>Fork $project to redhat-openstack organisation</li>
 <li><code>fedpkg clone openstack-$project &amp;&amp; cd openstack-$project</code></li>
-<li><code>git remote add -f fedora-openstack git@github.com:fedora-openstack/$project.git</code></li>
-<li><code>git checkout fedora-openstack/master</code></li>
+<li><code>git remote add -f redhat-openstack git@github.com:redhat-openstack/$project.git</code></li>
+<li><code>git checkout redhat-openstack/master</code></li>
 <li>
 <code>git checkout -b master-patches</code> # New local branch</li>
 <li>
-<code>git push --set-upstream fedora-openstack master-patches</code> # New upstream branch</li>
+<code>git push --set-upstream redhat-openstack master-patches</code> # New upstream branch</li>
 <li>On github set master-patches branch to default</li>
 <li>
-<code>git push fedora-openstack :master</code> # Delete upstream master branch (and any other unneeded branches)</li>
+<code>git push redhat-openstack :master</code> # Delete upstream master branch (and any other unneeded branches)</li>
 </ul><h2>setup local repo for a $project (if someone else set it up on github)</h2>
 
 <ul>
 <li><code>fedpkg clone openstack-$project &amp;&amp; cd openstack-$project</code></li>
-<li><code>git remote add -f fedora-openstack git@github.com:fedora-openstack/$project.git</code></li>
-<li><code>git branch master-patches fedora-openstack/master-patches</code></li>
+<li><code>git remote add -f redhat-openstack git@github.com:redhat-openstack/$project.git</code></li>
+<li><code>git branch master-patches redhat-openstack/master-patches</code></li>
 </ul><h2>finish setup of local repo</h2>
 
 <ul>
 <li><code>git remote add -f openstack git://github.com/openstack/$project.git</code></li>
-<li><code>git remote add -f fedora-smokestack git@github.com:fedora-openstack/openstack-$project.git</code></li>
-<li><code>wget https://raw.github.com/fedora-openstack/fedora-openstack.github.com/scripts/update-patches.sh</code></li>
-</ul><hr><p>So the above steps are only needed once to setup your local repo.
-The following are needed each time you want to update the Fedora package:</p>
+<li><code>git remote add -f redhat-smokestack git@github.com:redhat-openstack/openstack-$project.git</code></li>
+<li><code>wget https://raw.github.com/redhat-openstack/redhat-openstack.github.com/scripts/update-patches.sh</code></li>
+</ul><hr><p>The above steps are only needed once to setup your local repo.
+The following are needed each time you want to update an RDO package:</p>
 
 <h2>Patch set update process</h2>
 
@@ -64,7 +67,7 @@ The following are needed each time you want to update the Fedora package:</p>
 
 <ul>
 <li><code>git fetch --all</code></li>
-</ul><h3>Rebase Fedora specific patches on top of the OpenStack tree:</h3>
+</ul><h3>Rebase RDO specific patches on top of the OpenStack tree:</h3>
 
 <ul>
 <li><code>git checkout master-patches</code></li>
@@ -88,19 +91,20 @@ or directly from gerrit by copy and pasting the cherry-pick commands from there.
 <li><code>git pull origin</code></li>
 <li># Ensure the patches_base line is set appropriately in the spec file</li>
 <li><code>./update-patches.sh</code></li>
-</ul><h3>Update changelog and version in spec file as appropriate and push to the fedora repo</h3>
+</ul><h3>Update changelog and version in spec file as appropriate and push to the RDO repo</h3>
 
 <ul>
 <li><code>git commit --amend -a</code></li>
 <li><code>git push</code></li>
-</ul><h3>Push updated master-patches back to fedora-openstack. I.E. to github so everyone is synced.</h3>
+</ul><h3>Push updated master-patches back to redhat-openstack. I.E. to github so everyone is synced.</h3>
 
 <ul>
 <li>
-<code>git push fedora-openstack +master-patches</code>
+<code>git push redhat-openstack +master-patches</code>
 Note the + above, which will force sync (so there needs to be a little coordination between packagers)</li>
 </ul><p>Note a separate branch is not maintained on github until needed.
-I.E. just <code>git merge</code> fedora branches where appropriate.</p>
+For example if Fedora 19 has the same patches as rawhide, then
+just <code>git merge</code> those branches in the Fedora project git repositories.</p>
       </section>
       <footer>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
