@@ -42,7 +42,7 @@ fi
 spec=$($fedpkg gimmespec)
 branch=$(git branch | awk '/^\* / {print $2}')
 patches_branch="${branch}-patches"
-patches_base=$(awk -F '=' '/# patches_base/ { print $2 }' "${spec}")
+patches_base=$(awk -F '=' '/^# patches_base/ { print $2 }' "${spec}")
 patches_skip=${patches_base##*+} # extract skip count
 [ "$patches_skip" = "$patches_base" ] && patches_skip=0
 patches_base=${patches_base%+*} # strip skip count
@@ -104,7 +104,7 @@ for p in ${new_patches}; do
     i=$((i+1))
 done
 
-sed -i -e "/# patches_base/ { N; r ${patches_list}" -e "}" "${spec}"
+sed -i -e "/^# patches_base/ { N; r ${patches_list}" -e "}" "${spec}"
 sed -i -e "/^%setup -q/ { N; r ${patches_apply}" -e "}" "${spec}"
 
 #
