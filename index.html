@@ -58,7 +58,7 @@
 <li><code>git remote add -f redhat-smokestack git@github.com:redhat-openstack/openstack-$project.git</code></li>
 <li><code>wget https://raw.github.com/redhat-openstack/redhat-openstack.github.com/scripts/update-patches.sh</code></li>
 </ul><hr><p>The above steps are only needed once to setup your local repo.
-The following are needed each time you want to update an RDO package:</p>
+The following are needed each time you want to update a package:</p>
 
 <h2>Patch set update process</h2>
 
@@ -67,7 +67,7 @@ The following are needed each time you want to update an RDO package:</p>
 <ul>
 <li><code>git fetch --all --tags</code></li>
 <li><code>git fetch --all</code></li>
-</ul><h3>Rebase RDO specific patches on top of the OpenStack tree:</h3>
+</ul><h3>Rebase specific patches on top of the OpenStack tree:</h3>
 
 <ul>
 <li><code>git checkout master-patches</code></li>
@@ -91,7 +91,7 @@ or directly from gerrit by copy and pasting the cherry-pick commands from there.
 <li><code>git pull origin</code></li>
 <li># Ensure the patches_base line is set appropriately in the spec file</li>
 <li><code>./update-patches.sh</code></li>
-</ul><h3>Update changelog and version in spec file as appropriate and push to the RDO repo</h3>
+</ul><h3>Update changelog and version in spec file as appropriate and push to the repo</h3>
 
 <ul>
 <li><code>git commit --amend -a</code></li>
