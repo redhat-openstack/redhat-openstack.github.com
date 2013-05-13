@@ -67,6 +67,13 @@ git format-patch --no-signature 2>/dev/null && nosig='--no-signature'
 
 start_commit=$(git log --oneline ${patches_base}.. |
                head -n-${patches_skip} | tail -n1 | cut -d ' ' -f1)
+
+if ! test "$start_commit"; then
+    git checkout "${branch}"
+    echo 'Error: no patches found' >&2
+    exit 1
+fi
+
 new_patches=$(git format-patch --no-renames $nosig -N "${start_commit}~")
 
 #
