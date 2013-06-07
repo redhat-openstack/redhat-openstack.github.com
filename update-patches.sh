@@ -5,17 +5,18 @@
 
 # To use it, do e.g.
 #
+#   $> project=nova
 #   $> git checkout master
-#   $> git remote add -f fedora-openstack git@github.com:fedora-openstack/nova.git
-#   $> git branch master-patches fedora-openstack/master
+#   $> git remote add -f redhat-openstack git@github.com:redhat-openstack/$project.git
+#   $> git branch master-patches redhat-openstack/master-patches
 #   $> ./update-patches.sh
 #
-# Now your left with a commit which updates the patches
+# Now you're left with a commit which updates the patches
 #
 # When you've pushed and built the package, don't forget to also
 # push the patches with e.g.
 #
-#   $> git push fedora-openstack +master-patches:master
+#   $> git push --tags redhat-openstack +master-patches
 #
 
 set -e # exit on failure
