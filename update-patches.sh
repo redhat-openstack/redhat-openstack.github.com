@@ -68,53 +68,54 @@ git format-patch --no-signature 2>/dev/null && nosig='--no-signature'
 start_commit=$(git log --oneline ${patches_base}.. |
                head -n-${patches_skip} | tail -n1 | cut -d ' ' -f1)
 
-if ! test "$start_commit"; then
-    git checkout "${branch}"
-    echo 'Error: no patches found' >&2
-    exit 1
+if test "$start_commit"; then
+    new_patches=$(git format-patch --no-renames $nosig -N "${start_commit}~")
+
+    #
+    # Filter non dist files from the patches as otherwise
+    # `patch` will prompt/fail for the non existent files
+    #
+    for patch in $new_patches; do
+        filterdiff -x '*/.*' $patch > $patch.$$
+        mv $patch.$$ $patch
+    done
+else
+    echo 'Warning: no patches found' >&2
 fi
-
-new_patches=$(git format-patch --no-renames $nosig -N "${start_commit}~")
-
-#
-# Filter non dist files from the patches as otherwise
-# `patch` will prompt/fail for the non existent files
-#
-for patch in $new_patches; do
-    filterdiff -x '*/.*' $patch > $patch.$$
-    mv $patch.$$ $patch
-done
 
 #
 # Switch back to the original branch and add the patches
 #
 git checkout "${branch}"
-git add ${new_patches}
 
 #
 # Remove the Patch/%patch lines from the spec file
 #
 sed -i '/^#\?\(Patch\|%patch\)[0-9][0-9]*/d' "${spec}"
 
-#
-# Add a new set of Patch/%patch lines
-#
-patches_list=$(mktemp)
-patches_apply=$(mktemp)
+if test "${new_patches}"; then
+    git add ${new_patches}
 
-trap "rm '${patches_list}' '${patches_apply}'" EXIT
+    #
+    # Add a new set of Patch/%patch lines
+    #
+    patches_list=$(mktemp)
+    patches_apply=$(mktemp)
 
-i=1;
-for p in ${new_patches}; do
-    printf "Patch%.4d: %s\n" "${i}" "${p}" >> "${patches_list}"
-    printf "%%patch%.4d -p1\n" "${i}" >> "${patches_apply}"
-    i=$((i+1))
-done
+    trap "rm '${patches_list}' '${patches_apply}'" EXIT
 
-sed -i -e "/^# patches_base/ { N; r ${patches_list}" -e "}" "${spec}"
-sed -i -e "/^%setup -q/ { N; r ${patches_apply}" -e "}" "${spec}"
+    i=1;
+    for p in ${new_patches}; do
+        printf "Patch%.4d: %s\n" "${i}" "${p}" >> "${patches_list}"
+        printf "%%patch%.4d -p1\n" "${i}" >> "${patches_apply}"
+        i=$((i+1))
+    done
+
+    sed -i -e "/^# patches_base/ { N; r ${patches_list}" -e "}" "${spec}"
+    sed -i -e "/^%setup -q/ { N; r ${patches_apply}" -e "}" "${spec}"
+fi
 
 #
 # Update the original commit to include the new set of patches
 #
-git commit --amend -m "Updated patches from ${patches_branch}" "${spec}" ${new_patches}
+git commit --amend -a -m "Updated patches from ${patches_branch}"
