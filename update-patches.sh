@@ -66,7 +66,7 @@ git checkout "${patches_branch}"
 # avoid putting changeable git version in patches if possible
 git format-patch --no-signature 2>/dev/null && nosig='--no-signature'
 
-start_commit=$(git log --oneline ${patches_base}.. |
+start_commit=$(git log --oneline --ancestry-path ${patches_base}.. |
                head -n-${patches_skip} | tail -n1 | cut -d ' ' -f1)
 
 if test "$start_commit"; then
