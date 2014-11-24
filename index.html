@@ -56,7 +56,6 @@
 <ul>
 <li><code>git remote add -f openstack git://github.com/openstack/$project.git</code></li>
 <li><code>git remote add -f redhat-smokestack git@github.com:redhat-openstack/openstack-$project.git</code></li>
-<li><code>wget https://raw.github.com/redhat-openstack/redhat-openstack.github.com/scripts/update-patches.sh</code></li>
 </ul><hr><p>The above steps are only needed once to setup your local repo.
 The following are needed each time you want to update a package:</p>
 
@@ -90,7 +89,7 @@ or directly from gerrit by copy and pasting the cherry-pick commands from there.
 <li><code>git checkout master</code></li>
 <li><code>git pull origin</code></li>
 <li># Ensure the patches_base line is set appropriately in the spec file</li>
-<li><code>./update-patches.sh</code></li>
+<li><code>rdopkg update-patches</code></li>
 </ul><h3>Update changelog and version in spec file as appropriate and push to the repo</h3>
 
 <ul>
